@@ -38,6 +38,18 @@ function Index () {
       return true;
     }  
   };
+  
+  this.getIndex = function(fileName){
+    var result;
+    if(fileName === undefined) return this.wordIndex;
+    for(var indexKeys in this.wordIndex) {
+      if(path.win32.basename(indexKeys) === fileName || path.win32.basename(indexKeys, '.json') === fileName) {
+        result = this.wordIndex[indexKeys];
+      }
+    }
+    return result;
+  };
+  
   var cleanUpTemp = function() {
     currentDataIndex = {};
     currentFile = '';
