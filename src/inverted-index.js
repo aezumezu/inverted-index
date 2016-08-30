@@ -69,6 +69,40 @@ function Index () {
     return true;
   };
   
+  this.searchIndex = function(term){
+    var result = {};
+    var getValue, queryString;
+    var wordIndexLength = Object.keys(this.wordIndex).length;
+    term = parseSearchTerm(term);
+    if(wordIndexLength < 1) return 'Index is empty';
+    var that = this;
+    term.map(function(currentValue){
+      for(var indexKey in that.wordIndex){
+        queryString = currentValue;
+        getValue = _.get(that.wordIndex[indexKey], queryString);
+        if (getValue !== undefined && Object.keys(result).includes(queryString)){
+          result[queryString].push([indexKey, getValue]);
+        } else if (getValue !== undefined) {          
+          result[queryString] = [[indexKey, getValue]];
+        }
+      }
+    });
+    if (Object.keys(result).length < 1){
+      return 'Term not found';
+    }
+    return result;
+  };
+  
+  var parseSearchTerm = function(input) {
+    var term;
+    
+    if(Object.prototype.toString.call(input) === Object.prototype.toString.call('')) {
+      term = _.words(input);
+    } else if(Object.prototype.toString.call(input) === Object.prototype.toString.call([])) {
+      term = _.flattenDeep(input);
+    }
+    return term;
+  };
   
 }
 
