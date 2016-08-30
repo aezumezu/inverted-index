@@ -26,3 +26,21 @@ describe('Read book data', function () {
   });
 });
 
+describe('Populate index', function () {
+  var indexLength;
+  beforeEach(function () {
+    newIndex = new app();
+  });
+  
+  it('verifies that the indexes where created once json file is read.', function () {
+    indexLength = Object.keys(newIndex.wordIndex).length;
+    newIndex.isEmpty(book1Data);
+    expect(Object.keys(newIndex.wordIndex).length).toBeGreaterThan(indexLength);
+  });
+  
+  it('verifies the index maps the string keys to the correct objects in the JSON array.', function () {
+    newIndex.isEmpty(book1Data);
+    expect(newIndex.searchIndex('rabbit')).toEqual({'rabbit': [['', [0]]]});
+  });
+});
+
