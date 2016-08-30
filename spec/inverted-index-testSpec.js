@@ -44,3 +44,23 @@ describe('Populate index', function () {
   });
 });
 
+describe('Search index', function(){
+  
+  beforeEach(function () {
+    newIndex = new app();
+    newIndex.isEmpty(book1Data);
+  });
+  
+  it('returns an array of indices of the object that contains search query.', function(){
+    expect(newIndex.searchIndex('of')).toEqual({'of': [['', [0, 1]]]});
+  });
+  
+  it('returns "Term not found" for search query not in Index.', function(){
+    expect(newIndex.searchIndex('office')).toEqual('Term not found');
+  });
+  
+  it('returns "Index is empty" if Index collection is empty.', function(){
+    newIndex.wordIndex = {};
+    expect(newIndex.searchIndex('of')).toEqual('Index is empty');
+  });
+});
