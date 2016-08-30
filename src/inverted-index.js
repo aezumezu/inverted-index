@@ -1,5 +1,11 @@
+/*
+An inverted index object takes a JSON array of text objects and creates
+an index from the array. The index allows a user to search for text blocks
+in the array that contain a specified collection of words.
+*/
 'use strict';
 
+// create Index class
 function Index () {
   var _ = require('lodash');
   var fs = require('fs');
@@ -9,6 +15,7 @@ function Index () {
   
   this.wordIndex = {};
   
+  // createIndex accepts and reads JSON file
   this.createIndex = function(filePath){
     currentFile = path.resolve(filePath);
     var that = this;
@@ -23,6 +30,7 @@ function Index () {
     });
   };
   
+  // isEmpty confirms that the JSON file is not empty
   this.isEmpty = function(data) {
     var trueOrFalse = true;
     if(Object.prototype.toString.call(data) === Object.prototype.toString.call([])){
@@ -39,6 +47,7 @@ function Index () {
     }  
   };
   
+  // getIndex returns the index of the specified file
   this.getIndex = function(fileName){
     var result;
     if(fileName === undefined) return this.wordIndex;
@@ -50,11 +59,13 @@ function Index () {
     return result;
   };
   
+  // used to clean temorary variable used to create index
   var cleanUpTemp = function() {
     currentDataIndex = {};
     currentFile = '';
   };
   
+  // this method carries out the actual indexing of the JSON file
   var indexData = function(data, indexNum) {
     if (Object.keys(data).length < 1) return false;
     var bookText = _.values(data).toString();
@@ -69,6 +80,7 @@ function Index () {
     return true;
   };
   
+  // searchIndex method searches the index object and returns the search string
   this.searchIndex = function(term){
     var result = {};
     var getValue, queryString;
@@ -93,6 +105,7 @@ function Index () {
     return result;
   };
   
+  //this method formats the search term
   var parseSearchTerm = function(input) {
     var term;
     
