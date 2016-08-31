@@ -31,6 +31,7 @@ function Index () {
   };
   
   // isEmpty confirms that the JSON file is not empty
+  // Returns true of false.
   this.isEmpty = function(data) {
     var trueOrFalse = true;
     if(Object.prototype.toString.call(data) === Object.prototype.toString.call([])){
@@ -48,6 +49,7 @@ function Index () {
   };
   
   // getIndex returns the index of the specified file
+  // or wordIndex if called without an argument
   this.getIndex = function(fileName){
     var result;
     if(fileName === undefined) return this.wordIndex;
@@ -65,7 +67,8 @@ function Index () {
     currentFile = '';
   };
   
-  // this method carries out the actual indexing of the JSON file
+  // This method carries out the actual indexing of the JSON file
+  // It populates the wordIndex Object.
   var indexData = function(data, indexNum) {
     if (Object.keys(data).length < 1) return false;
     var bookText = _.values(data).toString();
@@ -81,6 +84,7 @@ function Index () {
   };
   
   // searchIndex method searches the index object and returns the search string
+  // Returns an object.
   this.searchIndex = function(term){
     var result = {};
     var getValue, queryString;
@@ -105,7 +109,7 @@ function Index () {
     return result;
   };
   
-  //this method formats the search term
+  //this method formats the search term. Returns an array.
   var parseSearchTerm = function(input) {
     var term;
     
