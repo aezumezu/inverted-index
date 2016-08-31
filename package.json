@@ -1,0 +1,19 @@
+{
+  "name": "inverted-index",
+  "version": "1.0.0",
+  "description": "Creates index of words from a .json file",
+  "main": "src/inverted-index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aezumezu/inverted-index.git"
+  },
+  "author": "Ezumezu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aezumezu/inverted-index/issues"
+  },
+  "homepage": "https://github.com/aezumezu/inverted-index#readme"
+}
