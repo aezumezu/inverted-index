@@ -34,12 +34,12 @@ describe('Populate index', function () {
   
   it('verifies that the indexes where created once json file is read.', function () {
     indexLength = Object.keys(newIndex.wordIndex).length;
-    newIndex.isEmpty(book1Data);
+    newIndex.indexData(book1Data);
     expect(Object.keys(newIndex.wordIndex).length).toBeGreaterThan(indexLength);
   });
   
   it('verifies the index maps the string keys to the correct objects in the JSON array.', function () {
-    newIndex.isEmpty(book1Data);
+    newIndex.indexData(book1Data);
     expect(newIndex.searchIndex('rabbit')).toEqual({'rabbit': [['', [0]]]});
   });
 });
@@ -48,7 +48,7 @@ describe('Search index', function(){
   
   beforeEach(function () {
     newIndex = new app();
-    newIndex.isEmpty(book1Data);
+    newIndex.indexData(book1Data);
   });
   
   it('returns an array of indices of the object that contains search query.', function(){
