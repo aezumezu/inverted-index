@@ -35,7 +35,7 @@ Index.prototype.isEmpty = function(data) {
   var trueOrFalse = true;
   if(Array.isArray(data)){
     data.forEach((item) => {
-      if(this.myLib.isObject(item) && Object.keys(item).length > 0) return false;
+      if(this.myLib.isObject(item) && Object.keys(item).length > 0) return (trueOrFalse = false);
     });
   }
   return trueOrFalse;
