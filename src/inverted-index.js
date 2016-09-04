@@ -35,7 +35,7 @@ Index.prototype.isEmpty = function(data) {
   var trueOrFalse = true;
   if(Array.isArray(data)){
     data.forEach((item) => {
-      if(this.myLib.isObject(item) && Object.keys(item).length > 0) return trueOrFalse = false;
+      if(this.myLib.isObject(item) && Object.keys(item).length > 0) return (trueOrFalse = false);
     });
   }
   return trueOrFalse;
@@ -73,12 +73,14 @@ Index.prototype.cleanUpTemp = function() {
 // getIndex returns the index of the specified file
 // or wordIndex if called without an argument
 Index.prototype.getIndex = function(fileName){
-  var result = {};
+  var result = {}, fileNameWithExt, fileNameWithOutExt;
   if(fileName === undefined) return this.wordIndex;
   Object.keys(this.wordIndex).forEach((indexKey) => {
-    if(this.path.win32.basename(indexKey) === fileName || this.path.win32.basename(indexKey, '.json') === fileName) result[indexKey] = this.wordIndex[indexKey];
+    fileNameWithExt = this.path.win32.basename(indexKey) === fileName;
+    fileNameWithOutExt = this.path.win32.basename(indexKey, '.json') === fileName;
+    if(fileNameWithExt || fileNameWithOutExt) result[indexKey] = this.wordIndex[indexKey];
   });
-  return Object.keys(result).length < 1 ? 'Document not fount' : result;
+  return Object.keys(result).length < 1 ? 'Document not found' : result;
 };
 
 // searchIndex method searches the index object and returns the search string
