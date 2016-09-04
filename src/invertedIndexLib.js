@@ -1,55 +1,53 @@
 'use strict';
 
-function MyLibrary() {
-  var result = [];
+module.exports = {
+  result: [],
   
-  this.isObject = function(ob) {
+  isObject: function(ob) {
     return (ob.toString() === {}.toString());
-  };
+  },
   
-  this.values = function(ob) {
+  values: function(ob) {
     var result = [];
     Object.keys(ob).forEach((key) => {
       result.push(ob[key]);
     });
     return result;
-  };
+  },
   
-  this.words = function(str) {
-    str = removeSpecial(str).split(' ');
+  words: function(str) {
+    str = this.removeSpecial(str).split(' ');
     str = str.filter((item) => {
       return /\S/.test(item);
     });
     return str;
-  };
+  },
   
-  var removeSpecial = function(str) {
+  removeSpecial: function(str) {
     return str.replace(/[.,\/#!$%\^&\*;:'{}=\-_`~()]/g," ");
-  };
+  },
   
-  this.uniq = function(arr) {
+  uniq: function(arr) {
     var g = [];
     arr.map((item) => {
       if (!g.includes(item)) g.push(item);
     });
     return g;
-  };
+  },
   
-  this.flatten = function(input) {
+  flatten: function(input) {
     if(Array.isArray(input)) {
       input.forEach((item) => {
         this.flatten(item);
-      })
+      });
     } else {
-      result.push(input);
+      this.result.push(input);
     }
-    return result;
-  };
+    return this.result;
+  },
   
-  this.cleanUpTemp = function(){
-    result = [];
-  };
+  cleanUpTemp: function(){
+    this.result = [];
+  }
   
-}
-
-module.exports = MyLibrary;
+};

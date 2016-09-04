@@ -7,8 +7,7 @@ in the array that contain a specified collection of words.
 
 // create Index class
 function Index () {
-  var app = require('./invertedIndexLib');
-  this.myLib = new app();
+  this.myLib = require('./invertedIndexLib');
   this.fs = require('fs');
   this.path = require('path');
   this.currentFile = '';
@@ -35,7 +34,7 @@ Index.prototype.createIndex = function(filePath){
 Index.prototype.isEmpty = function(data) {
   var trueOrFalse = true;
   if(Array.isArray(data)){
-    data.map((item) => {
+    data.forEach((item) => {
       if(this.myLib.isObject(item) && Object.keys(item).length > 0) return trueOrFalse = false;
     });
   }
@@ -76,9 +75,9 @@ Index.prototype.cleanUpTemp = function() {
 Index.prototype.getIndex = function(fileName){
   var result = {};
   if(fileName === undefined) return this.wordIndex;
-  for(var indexKey in this.wordIndex) {
+  Object.keys(this.wordIndex).forEach((indexKey) => {
     if(this.path.win32.basename(indexKey) === fileName || this.path.win32.basename(indexKey, '.json') === fileName) result[indexKey] = this.wordIndex[indexKey];
-  }
+  });
   return Object.keys(result).length < 1 ? 'Document not fount' : result;
 };
 
@@ -88,7 +87,7 @@ Index.prototype.searchIndex = function(term){
   this.searchResult = {};
   term = this.parseSearchTerm(term);
   if(Object.keys(this.wordIndex).length < 1) return 'Index is empty';
-  term.map((currentValue) => {
+  term.forEach((currentValue) => {
     this.findIndex(currentValue);
   });
   if (Object.keys(this.searchResult).length < 1){
@@ -99,7 +98,7 @@ Index.prototype.searchIndex = function(term){
 
 Index.prototype.findIndex = function(term) {
   var indexValue;
-  Object.keys(this.wordIndex).map((item) => {
+  Object.keys(this.wordIndex).forEach((item) => {
     indexValue = this.wordIndex[item][term];
     if (indexValue !== undefined && Object.keys(this.searchResult).includes(term)){
       this.searchResult[term].push([item, indexValue]);
@@ -121,7 +120,4 @@ Index.prototype.parseSearchTerm = function(input) {
   return term;
 };
 
-var ne = new Index();
-ne.createIndex('../books.json');
-ne.searchIndex(['many', 'to']);
 module.exports= Index;
