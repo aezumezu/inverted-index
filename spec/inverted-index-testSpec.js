@@ -1,5 +1,6 @@
 'use strict';
 var app = require('../src/inverted-index');
+var path = require('path');
 var newIndex;
 
 describe('Read book data', function() {
@@ -42,7 +43,7 @@ describe('Populate index', function () {
   });
   
   it('verifies the index maps the string keys to the correct objects in the JSON array.', function () {
-    var answer = {'alice': [['D:\\Andela_Checkpoints\\CP1\\inverted-index\\books.json', [0]]]};
+    var answer = {'alice': [[path.resolve('./books.json'), [0]]]};
     newIndex.createIndex('./books.json');
     expect(newIndex.searchIndex('alice')).toEqual(answer);
   });
@@ -56,13 +57,13 @@ describe('Search index', function(){
   });
   
   it('returns an array of indices of the object that contains search query.', function(){
-    var answer = {'of': [['D:\\Andela_Checkpoints\\CP1\\inverted-index\\books.json', [0, 1]]]};
+    var answer = {'of': [[path.resolve('./books.json'), [0, 1]]]};
     expect(newIndex.searchIndex('of')).toEqual(answer);
   });
   
   it('returns an array of indices of the object that contains search query.', function(){
     newIndex.createIndex('./crater.json');
-    var answer = { 'of':  [ [ 'D:\\Andela_Checkpoints\\CP1\\inverted-index\\books.json', [0, 1] ], [ 'D:\\Andela_Checkpoints\\CP1\\inverted-index\\crater.json', [1] ] ] };
+    var answer = { 'of':  [ [ path.resolve('./books.json'), [0, 1] ], [ path.resolve('./crater.json'), [1] ] ] };
     expect(newIndex.searchIndex('of')).toEqual(answer);
   });
   
