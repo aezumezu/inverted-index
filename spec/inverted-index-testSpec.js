@@ -1,21 +1,23 @@
 'use strict';
 var app = require('../src/inverted-index');
 var newIndex;
-var book1Data = [{"title": "Alice in Wonderland","text": "Alice falls into a rabbit hole and enters a world full of imagination."},{"title": "The Lord of the Rings: The Fellowship of the Ring.","text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring."}];
 
-describe('Read book data', function () {
+describe('Read book data', function() {
   
-  beforeEach(function () {
+  beforeEach(function() {    
     newIndex = new app();
   });
   
   it('reads the JSON file and asserts that it is not empty', function () {
+    newIndex.createIndex('./books.json');
+    var book1Data = newIndex.dataObject;
     expect(newIndex.isEmpty([{},{'one': 'Bigone'}])).toBe(false);
+    expect(newIndex.isEmpty(book1Data)).toBe(false);
   });
   
   it('throws error for empty book.json files.', function () {
-    expect(newIndex.isEmpty([])).toBe(true);
-    expect(newIndex.isEmpty([{}])).toBe(true);
+    expect(newIndex.isEmpty(JSON.parse('[]'))).toBe(true);
+    expect(newIndex.isEmpty(JSON.parse('[{}]'))).toBe(true);
     expect(newIndex.isEmpty('')).toBe(true);
     expect(newIndex.isEmpty()).toBe(true);
   });
@@ -28,31 +30,40 @@ describe('Read book data', function () {
 
 describe('Populate index', function () {
   var indexLength;
-  beforeEach(function () {
+  
+  beforeEach(function() {    
     newIndex = new app();
   });
   
   it('verifies that the indexes where created once json file is read.', function () {
     indexLength = Object.keys(newIndex.wordIndex).length;
-    newIndex.indexData(book1Data);
+    newIndex.createIndex('./books.json');
     expect(Object.keys(newIndex.wordIndex).length).toBeGreaterThan(indexLength);
   });
   
   it('verifies the index maps the string keys to the correct objects in the JSON array.', function () {
-    newIndex.indexData(book1Data);
-    expect(newIndex.searchIndex('rabbit')).toEqual({'rabbit': [['', [0]]]});
+    var answer = {'alice': [['D:\\Andela_Checkpoints\\CP1\\inverted-index\\books.json', [0]]]};
+    newIndex.createIndex('./books.json');
+    expect(newIndex.searchIndex('alice')).toEqual(answer);
   });
 });
 
 describe('Search index', function(){
   
-  beforeEach(function () {
+  beforeEach(function() {    
     newIndex = new app();
-    newIndex.indexData(book1Data);
+    newIndex.createIndex('./books.json');
   });
   
   it('returns an array of indices of the object that contains search query.', function(){
-    expect(newIndex.searchIndex('of')).toEqual({'of': [['', [0, 1]]]});
+    var answer = {'of': [['D:\\Andela_Checkpoints\\CP1\\inverted-index\\books.json', [0, 1]]]};
+    expect(newIndex.searchIndex('of')).toEqual(answer);
+  });
+  
+  it('returns an array of indices of the object that contains search query.', function(){
+    newIndex.createIndex('./crater.json');
+    var answer = { 'of':  [ [ 'D:\\Andela_Checkpoints\\CP1\\inverted-index\\books.json', [0, 1] ], [ 'D:\\Andela_Checkpoints\\CP1\\inverted-index\\crater.json', [1] ] ] };
+    expect(newIndex.searchIndex('of')).toEqual(answer);
   });
   
   it('returns "Term not found" for search query not in Index.', function(){
@@ -63,4 +74,41 @@ describe('Search index', function(){
     newIndex.wordIndex = {};
     expect(newIndex.searchIndex('of')).toEqual('Index is empty');
   });
+});
+
+describe('ParseSearchTerm', function(){
+  
+  beforeEach(function() {    
+    newIndex = new app();
+    newIndex.createIndex('./books.json');
+  });
+  it('returns a one dimensional array.', function(){
+    var inputArray = ['alice', ['jerry', 'car', ['item']], 'correct'];
+    var inputString = 'alice, jerry. car item correct';
+    var answer = ['alice', 'jerry', 'car', 'item', 'correct']
+    expect(newIndex.parseSearchTerm(inputArray)).toEqual(answer);
+    expect(newIndex.parseSearchTerm(inputString)).toEqual(answer);
+  });
+  
+});
+
+describe('getIndex Method', function(){
+  
+  beforeEach(function() {    
+    newIndex = new app();
+    newIndex.createIndex('./books.json');
+    newIndex.createIndex('./crater.json');
+  });
+  
+  it('returns the entire index object without parameter.', function(){
+    expect(newIndex.getIndex()).toEqual(newIndex.wordIndex);
+  });
+  
+  it('returns the specified index in index object.', function(){
+    var indexValue = newIndex.getIndex('books');
+    newIndex.wordIndex = {};
+    newIndex.createIndex('./books.json');
+    expect(indexValue).toEqual(newIndex.wordIndex);
+  });
+  
 });

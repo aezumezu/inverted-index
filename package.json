@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/aezumezu/inverted-index#readme",
   "devDependencies": {
-    "coveralls": "^2.11.12"
+    "coveralls": "^2.11.12",
+    "jasmine-spec-reporter": "^2.7.0"
   }
 }
