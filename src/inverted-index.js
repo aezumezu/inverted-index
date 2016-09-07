@@ -7,7 +7,7 @@ in the array that contain a specified collection of words.
 
 // create Index class
 function Index () {
-  this.myLib = require('../src/invertedIndexLib');
+  this.myLib = require('./invertedIndexLib');
   this.fs = require('fs');
   this.path = require('path');
   this.currentFile = '';
