@@ -1,0 +1,26 @@
+{
+  "name": "inverted-index",
+  "version": "1.0.0",
+  "description": "Creates index of words from a .json file",
+  "main": "src/inverted-index.js",
+  "scripts": {
+    "test:coverage": "rm -rf coverage/ && istanbul cover node_modules/jasmine/bin/jasmine.js",
+    "test": "node jasmine-runner.js",
+    "coveralls": "cat ./coverage/lcov.info | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aezumezu/inverted-index.git"
+  },
+  "author": "Ezumezu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aezumezu/inverted-index/issues"
+  },
+  "homepage": "https://github.com/aezumezu/inverted-index#readme",
+  "devDependencies": {
+    "coveralls": "^2.11.12",
+    "jasmine": "^2.5.0",
+    "jasmine-spec-reporter": "^2.7.0"
+  }
+}
