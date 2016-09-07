@@ -4,7 +4,7 @@
   "description": "Creates index of words from a .json file",
   "main": "src/inverted-index.js",
   "scripts": {
-    "test:coverage": "rm -rf coverage/ && istanbul cover node_modules\\jasmine\\bin\\jasmine.js",
+    "test:coverage": "rm -rf coverage/ && istanbul cover node_modules/jasmine/bin/jasmine.js",
     "test": "jasmine",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/aezumezu/inverted-index#readme",
   "devDependencies": {
-    "coveralls": "^2.11.12"
+    "coveralls": "^2.11.12",
+    "jasmine-spec-reporter": "^2.7.0"
   }
 }
