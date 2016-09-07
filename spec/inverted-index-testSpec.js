@@ -112,3 +112,4 @@ describe('getIndex Method', function(){
   });
   
 });
+console.log('Hello 4');
