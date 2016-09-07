@@ -1,3 +1,4 @@
 src/coverage
 node_modules
 coverage
+jasmine-runner.js
