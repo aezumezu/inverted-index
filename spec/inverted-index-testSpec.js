@@ -1,4 +1,3 @@
-console.log('Hello');
 'use strict';
 var app = require('../src/inverted-index');
 var newIndex;
@@ -28,7 +27,7 @@ describe('Read book data', function() {
     expect(newIndex.isEmpty(['hello', 'come', 1])).toBe(true);
   });
 });
-
+console.log('Hello 1');
 describe('Populate index', function () {
   var indexLength;
   
@@ -48,7 +47,7 @@ describe('Populate index', function () {
     expect(newIndex.searchIndex('alice')).toEqual(answer);
   });
 });
-
+console.log('Hello 2');
 describe('Search index', function(){
   
   beforeEach(function() {    
@@ -76,7 +75,7 @@ describe('Search index', function(){
     expect(newIndex.searchIndex('of')).toEqual('Index is empty');
   });
 });
-
+console.log('Hello 3');
 describe('ParseSearchTerm', function(){
   
   beforeEach(function() {    
@@ -92,7 +91,7 @@ describe('ParseSearchTerm', function(){
   });
   
 });
-
+console.log('Hello 4');
 describe('getIndex Method', function(){
   
   beforeEach(function() {    
