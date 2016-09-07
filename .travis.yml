@@ -3,7 +3,7 @@ node_js:
   - "6"
   - "6.1"
 before_script:
-  - npm install jasmine
+  - npm install -g jasmine
   - npm install -g istanbul
 script:
   - npm run test
