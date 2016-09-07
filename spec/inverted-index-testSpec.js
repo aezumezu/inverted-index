@@ -1,3 +1,4 @@
+console.log('Hello');
 'use strict';
 var app = require('../src/inverted-index');
 var newIndex;
