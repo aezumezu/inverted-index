@@ -59,7 +59,7 @@ module.exports = {
     return this.result;
   },
   
-  cleanUpTemp: function(){
+  cleanUpTemp: function() {
     this.result = [];
   }
   
