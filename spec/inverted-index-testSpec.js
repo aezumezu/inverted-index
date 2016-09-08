@@ -72,7 +72,7 @@ describe('Search index', function(){
   });
     
   it('can accpet object input as search term.', function(){
-    var answer = {'of': [[path.resolve('./books.json'), [0, 1]]], "alice":[["D:\\Andela_Checkpoints\\CP1\\inverted-index\\books.json",[0]]]};
+    var answer = {'of': [[path.resolve('./books.json'), [0, 1]]], "alice":[[path.resolve('./books.json'),[0]]]};
     expect(newIndex.searchIndex([{of: 'alice'}])).toEqual(answer);
     expect(newIndex.searchIndex({of: 'alice'})).toEqual(answer);
   });
