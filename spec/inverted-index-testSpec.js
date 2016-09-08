@@ -70,6 +70,12 @@ describe('Search index', function(){
   it('returns "Term not found" for search query not in Index.', function(){
     expect(newIndex.searchIndex('office')).toEqual('Term not found');
   });
+    
+  it('can accpet object input as search term.', function(){
+    var answer = {'of': [[path.resolve('./books.json'), [0, 1]]], "alice":[["D:\\Andela_Checkpoints\\CP1\\inverted-index\\books.json",[0]]]};
+    expect(newIndex.searchIndex([{of: 'alice'}])).toEqual(answer);
+    expect(newIndex.searchIndex({of: 'alice'})).toEqual(answer);
+  });
   
   it('returns "Index is empty" if Index collection is empty.', function(){
     newIndex.wordIndex = {};
@@ -86,7 +92,7 @@ describe('ParseSearchTerm', function(){
   it('returns a one dimensional array.', function(){
     var inputArray = ['alice', ['jerry', 'car', ['item']], 'correct'];
     var inputString = 'alice, jerry. car item correct';
-    var answer = ['alice', 'jerry', 'car', 'item', 'correct']
+    var answer = ['alice', 'jerry', 'car', 'item', 'correct'];
     expect(newIndex.parseSearchTerm(inputArray)).toEqual(answer);
     expect(newIndex.parseSearchTerm(inputString)).toEqual(answer);
   });
