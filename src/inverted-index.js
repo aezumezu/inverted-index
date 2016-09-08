@@ -117,6 +117,8 @@ Index.prototype.parseSearchTerm = function(input) {
   } else if(Array.isArray(input)) {
     term = this.myLib.flatten(input);
     this.myLib.cleanUpTemp();
+  } else if(this.myLib.isObject(input)) {
+    term = this.myLib.parseObject(input);
   }
   return term;
 };

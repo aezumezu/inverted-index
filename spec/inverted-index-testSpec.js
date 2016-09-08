@@ -42,7 +42,7 @@ describe('Populate index', function () {
     expect(Object.keys(newIndex.wordIndex).length).toBeGreaterThan(indexLength);
   });
   
-  it('verifies the index maps the string keys to the correct objects in the JSON array.', function () {
+  it('verifies the index maps the string keys to the correct objects in the JSON array.', function() {
     var answer = {'alice': [[path.resolve('./books.json'), [0]]]};
     newIndex.createIndex('./books.json');
     expect(newIndex.searchIndex('alice')).toEqual(answer);
