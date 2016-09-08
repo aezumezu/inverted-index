@@ -27,6 +27,10 @@ describe('Read book data', function() {
     expect(newIndex.isEmpty('hello world')).toBe(true);
     expect(newIndex.isEmpty(['hello', 'come', 1])).toBe(true);
   });
+    
+  it('return "Empty files" for blank json files.', function () {
+    expect(newIndex.createIndex('./empty.json')).toBe('Empty file.');
+  });
 });
 
 describe('Populate index', function () {
