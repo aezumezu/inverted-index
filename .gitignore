@@ -2,4 +2,3 @@ src/coverage
 node_modules
 coverage
 test.js
-empty.json
