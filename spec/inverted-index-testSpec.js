@@ -81,6 +81,11 @@ describe('Search index', function(){
     newIndex.wordIndex = {};
     expect(newIndex.searchIndex('of')).toEqual('Index is empty');
   });
+    
+  it('returns "Invalid search term" for invalid search inputs.', function(){
+    expect(newIndex.searchIndex()).toEqual('Invalid Search Term');
+    expect(newIndex.searchIndex('  ')).toEqual('Invalid Search Term');
+  });
 });
 
 describe('ParseSearchTerm', function(){
