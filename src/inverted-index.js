@@ -25,7 +25,8 @@ Index.prototype.createIndex = function(filePath){
     this.dataObject = JSON.parse(data.toString());
     return (this.isEmpty(this.dataObject)) ? 'Empty file.' : this.indexData(this.dataObject);
   }
-  return console.log('Empty file.');
+  console.log('Empty file.');
+  return 'Empty file.';
 };
   
 // isEmpty confirms that the JSON file is not empty
@@ -85,8 +86,10 @@ Index.prototype.getIndex = function(fileName){
 // searchIndex method searches the index object and returns the search string
 // Returns an object.
 Index.prototype.searchIndex = function(term){
+  if (!/\S/.test(term) || term === undefined) return 'Invalid Search Term';
   this.searchResult = {};
   term = this.parseSearchTerm(term);
+  if (term === undefined) return 'Invalid Search Term';
   if(Object.keys(this.wordIndex).length < 1) return 'Index is empty';
   term.forEach((currentValue) => {
     this.findIndex(currentValue);
@@ -116,6 +119,9 @@ Index.prototype.parseSearchTerm = function(input) {
     term = this.myLib.words(input);
   } else if(Array.isArray(input)) {
     term = this.myLib.flatten(input);
+    this.myLib.cleanUpTemp();
+  } else if(this.myLib.isObject(input)) {
+    term = this.myLib.parseObject(input);
     this.myLib.cleanUpTemp();
   }
   return term;
