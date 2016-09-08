@@ -12,7 +12,7 @@ describe('Read book data', function() {
   it('reads the JSON file and asserts that it is not empty', function () {
     newIndex.createIndex('./books.json');
     var book1Data = newIndex.dataObject;
-    expect(newIndex.isEmpty([{},{'one': 'Bigone'}])).toBe(false);
+    expect(newIndex.isEmpty(([{},{'one': 'Bigone'}]))).toBe(false);
     expect(newIndex.isEmpty(book1Data)).toBe(false);
   });
   
@@ -29,7 +29,7 @@ describe('Read book data', function() {
   });
     
   it('return "Empty files" for blank json files.', function () {
-    expect(newIndex.createIndex('./empty.json')).toBe('Empty file.');
+    expect(newIndex.createIndex('./empty.json')).toEqual('Empty file.');
   });
 });
 
@@ -75,7 +75,7 @@ describe('Search index', function(){
     expect(newIndex.searchIndex('office')).toEqual('Term not found');
   });
     
-  it('can accpet object input as search term.', function(){
+  it('can accept object input as search term.', function(){
     var answer = {'of': [[path.resolve('./books.json'), [0, 1]]], "alice":[[path.resolve('./books.json'),[0]]]};
     expect(newIndex.searchIndex([{of: 'alice'}])).toEqual(answer);
     expect(newIndex.searchIndex({of: 'alice'})).toEqual(answer);

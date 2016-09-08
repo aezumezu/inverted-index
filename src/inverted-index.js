@@ -25,7 +25,8 @@ Index.prototype.createIndex = function(filePath){
     this.dataObject = JSON.parse(data.toString());
     return (this.isEmpty(this.dataObject)) ? 'Empty file.' : this.indexData(this.dataObject);
   }
-  return console.log('Empty file.');
+  console.log('Empty file.');
+  return 'Empty file.';
 };
   
 // isEmpty confirms that the JSON file is not empty
