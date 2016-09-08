@@ -1,12 +1,14 @@
 module.exports = {
   result: [],
 
+  // verifies if ob is an Object
   isObject: function(ob) {
     'use strict';
     let result = ob.toString() === {}.toString();
     return result;
   },
 
+  // returns the values in an object
   values: function(ob) {
     'use strict';
     let result = [];
@@ -16,6 +18,7 @@ module.exports = {
     return result;
   },
 
+  // returns an array of words in a string
   words: function(str) {
     'use strict';
     str = this.removeSpecial(str).split(' ');
@@ -25,11 +28,13 @@ module.exports = {
     return str;
   },
 
+  // strips a strind of all special character
   removeSpecial: function(str) {
     'use strict';
     return str.replace(/[.,\/#!$%\^&\*;:'{}=\-_`~()]/g, ' ');
   },
 
+  // remove duplicate terms in an array
   uniq: function(arr) {
     'use strict';
     let g = [];
@@ -41,6 +46,7 @@ module.exports = {
     return g;
   },
 
+  // gets all the strings in an Objecr
   parseObject: function(ob) {
     'use strict';
     let result = [];
@@ -53,6 +59,8 @@ module.exports = {
     return this.flatten(result);
   },
 
+  // returns a one dimentional array from
+  // a multi-dimentional array input
   flatten: function(input) {
     'use strict';
     if(Array.isArray(input)) {
@@ -67,6 +75,7 @@ module.exports = {
     return this.result;
   },
 
+  // empties the variable
   cleanUpTemp: function() {
     'use strict';
     this.result = [];
