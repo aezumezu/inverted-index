@@ -1,6 +1,7 @@
 'use strict';
 var app = require('../src/inverted-index');
 var path = require('path');
+var util = require('util');
 var newIndex;
 
 describe('Read book data', function() {
@@ -48,8 +49,7 @@ describe('Populate index', function () {
   
   it('verifies the index maps the string keys to the correct objects in the JSON array.', function() {
     var answer = {'alice': [[path.resolve('./books.json'), [0]]]};
-    newIndex.createIndex('./books.json');
-    expect(newIndex.searchIndex('alice')).toEqual(answer);
+    newIndex.createIndex('./books.json'); expect(newIndex.searchIndex('alice')).toEqual(util.inspect(answer, false, null));
   });
 });
 
@@ -62,13 +62,13 @@ describe('Search index', function(){
   
   it('returns an array of indices of the object that contains search query.', function(){
     var answer = {'of': [[path.resolve('./books.json'), [0, 1]]]};
-    expect(newIndex.searchIndex('of')).toEqual(answer);
+    expect(newIndex.searchIndex('of')).toEqual(util.inspect(answer, false, null));
   });
   
   it('returns an array of indices of the object that contains search query.', function(){
     newIndex.createIndex('./crater.json');
     var answer = { 'of':  [ [ path.resolve('./books.json'), [0, 1] ], [ path.resolve('./crater.json'), [1] ] ] };
-    expect(newIndex.searchIndex('of')).toEqual(answer);
+    expect(newIndex.searchIndex('of')).toEqual(util.inspect(answer, false, null));
   });
   
   it('returns "Term not found" for search query not in Index.', function(){
@@ -77,8 +77,8 @@ describe('Search index', function(){
     
   it('can accept object input as search term.', function(){
     var answer = {'of': [[path.resolve('./books.json'), [0, 1]]], "alice":[[path.resolve('./books.json'),[0]]]};
-    expect(newIndex.searchIndex([{of: 'alice'}])).toEqual(answer);
-    expect(newIndex.searchIndex({of: 'alice'})).toEqual(answer);
+    expect(newIndex.searchIndex([{of: 'alice'}])).toEqual(util.inspect(answer, false, null));
+    expect(newIndex.searchIndex({of: 'alice'})).toEqual(util.inspect(answer, false, null));
   });
   
   it('returns "Index is empty" if Index collection is empty.', function(){

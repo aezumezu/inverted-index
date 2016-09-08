@@ -10,6 +10,7 @@ function Index () {
   this.myLib = require('./invertedIndexLib');
   this.fs = require('fs');
   this.path = require('path');
+  this.util = require('util');
   this.currentFile = '';
   this.currentDataIndex = {};  
   this.wordIndex = {};
@@ -97,7 +98,7 @@ Index.prototype.searchIndex = function(term){
   if (Object.keys(this.searchResult).length < 1){
     return 'Term not found';
   }
-  return this.searchResult;
+  return this.util.inspect(this.searchResult, false, null);
 };
 
 Index.prototype.findIndex = function(term) {
