@@ -6,7 +6,7 @@ in the array that contain a specified collection of words.
 'use strict';
 
 // create Index class
-function Index () {
+function Index() {
   this.myLib = require('./invertedIndexLib');
   this.fs = require('fs');
   this.path = require('path');
@@ -19,12 +19,15 @@ function Index () {
 }
 
 // createIndex accepts and reads JSON file
-Index.prototype.createIndex = function(filePath){
+Index.prototype.createIndex = function(filePath) {
   this.currentFile = this.path.resolve(filePath);
   var data = this.fs.readFileSync(filePath);
+  
+  // Confirms the content of JSON file
   if (data.length > 0){
     this.dataObject = JSON.parse(data.toString());
-    return (this.isEmpty(this.dataObject)) ? 'Empty file.' : this.indexData(this.dataObject);
+    return (this.isEmpty(this.dataObject)) ? 'Empty file.'
+      : this.indexData(this.dataObject);
   }
   console.log('Empty file.');
   return 'Empty file.';
@@ -36,7 +39,8 @@ Index.prototype.isEmpty = function(data) {
   var trueOrFalse = true;
   if(Array.isArray(data)){
     data.forEach((item) => {
-      if(this.myLib.isObject(item) && Object.keys(item).length > 0) return (trueOrFalse = false);
+      if(this.myLib.isObject(item) && Object.keys(item).length > 0)
+        return (trueOrFalse = false);
     });
   }
   return trueOrFalse;
@@ -49,6 +53,7 @@ Index.prototype.indexData = function(data) {
     var dataList = this.myLib.uniq(this.myLib.words(bookText.toLowerCase()));
     this.populate(dataList, indexNum);
   });
+  
   this.wordIndex[this.currentFile] = this.currentDataIndex;
   this.cleanUpTemp();
   return this.wordIndex;
@@ -73,28 +78,35 @@ Index.prototype.cleanUpTemp = function() {
 
 // getIndex returns the index of the specified file
 // or wordIndex if called without an argument
-Index.prototype.getIndex = function(fileName){
+Index.prototype.getIndex = function(fileName) {
   var result = {}, fileNameWithExt, fileNameWithOutExt;
   if(fileName === undefined) return this.wordIndex;
+  
+  // looks for fileName in the Index of words
   Object.keys(this.wordIndex).forEach((indexKey) => {
     fileNameWithExt = this.path.win32.basename(indexKey) === fileName;
     fileNameWithOutExt = this.path.win32.basename(indexKey, '.json') === fileName;
-    if(fileNameWithExt || fileNameWithOutExt) result[indexKey] = this.wordIndex[indexKey];
+    if(fileNameWithExt || fileNameWithOutExt)
+      result[indexKey] = this.wordIndex[indexKey];
   });
   return Object.keys(result).length < 1 ? 'Document not found' : result;
 };
 
 // searchIndex method searches the index object and returns the search string
 // Returns an object.
-Index.prototype.searchIndex = function(term){
-  if (!/\S/.test(term) || term === undefined) return 'Invalid Search Term';
+Index.prototype.searchIndex = function(term) {
+  if (!/\S/.test(term) || term === undefined)
+    return 'Invalid Search Term';
   this.searchResult = {};
   term = this.parseSearchTerm(term);
+  
   if (term === undefined) return 'Invalid Search Term';
-  if(Object.keys(this.wordIndex).length < 1) return 'Index is empty';
+  if(Object.keys(this.wordIndex).length < 1)
+    return 'Index is empty';
   term.forEach((currentValue) => {
     this.findIndex(currentValue);
   });
+  
   if (Object.keys(this.searchResult).length < 1){
     return 'Term not found';
   }
@@ -105,7 +117,8 @@ Index.prototype.findIndex = function(term) {
   var indexValue;
   Object.keys(this.wordIndex).forEach((item) => {
     indexValue = this.wordIndex[item][term];
-    if (indexValue !== undefined && Object.keys(this.searchResult).includes(term)){
+    if (indexValue !== undefined &&
+        Object.keys(this.searchResult).includes(term)){
       this.searchResult[term].push([item, indexValue]);
     } else if (indexValue !== undefined) {
       this.searchResult[term] = [[item, indexValue]];
