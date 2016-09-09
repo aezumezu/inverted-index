@@ -15,7 +15,7 @@ module.exports = {
     Object.keys(ob).forEach((key) => {
       result.push(ob[key]);
     });
-    return result;
+    return this.compact(result);
   },
 
   // returns an array of words in a string
@@ -25,7 +25,7 @@ module.exports = {
     str = str.filter((item) => {
       return /\S/.test(item);
     });
-    return str;
+    return this.compact(str);
   },
 
   // strips a strind of all special character
@@ -43,7 +43,7 @@ module.exports = {
         g.push(item);
       }
     });
-    return g;
+    return this.compact(g);
   },
 
   // gets all the strings in an Objecr
@@ -72,7 +72,20 @@ module.exports = {
     } else {
       this.result.push(input);
     }
-    return this.result;
+    return this.compact(this.result);
+  },
+
+  // remove all false values
+  compact: function(input) {
+    'use strict';
+    let result = input.filter(item => {
+      return typeof item !== 'boolean';
+    });
+    let term = result.filter(item => {
+      return isNaN(item);
+    });
+
+    return term;
   },
 
   // empties the variable

@@ -111,6 +111,12 @@ describe('ParseSearchTerm', function() {
     expect(newIndex.parseSearchTerm(inputString)).toEqual(answer);
   });
 
+  it('returns an error for invalid search term.', function() {
+    expect(newIndex.searchIndex(78)).toEqual('Invalid Search Term');
+    expect(newIndex.searchIndex(true)).toEqual('Invalid Search Term');
+    expect(newIndex.searchIndex([true])).toEqual('Invalid Search Term');
+  });
+
 });
 
 describe('getIndex Method', function() {

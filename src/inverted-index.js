@@ -113,7 +113,7 @@ Index.prototype.searchIndex = function(term) {
   this.searchResult = {};
   term = this.parseSearchTerm(term);
 
-  if (!term) {
+  if (!term || term.length < 1) {
     return 'Invalid Search Term';
   }
   if(Object.keys(this.wordIndex).length < 1) {
@@ -155,6 +155,8 @@ Index.prototype.parseSearchTerm = function(input) {
   } else if(this.myLib.isObject(input)) {
     term = this.myLib.parseObject(input);
     this.myLib.cleanUpTemp();
+  } else {
+    term = null;
   }
   return term;
 };
