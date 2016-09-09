@@ -2,3 +2,5 @@ src/coverage
 node_modules
 coverage
 test.js
+.eslintrc.js
+.jshintrc

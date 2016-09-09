@@ -1,52 +1,60 @@
-'use strict';
-
 module.exports = {
   result: [],
-  
+
   isObject: function(ob) {
-    return (ob.toString() === {}.toString());
+    'use strict';
+    let result = ob.toString() === {}.toString();
+    return result;
   },
-  
+
   values: function(ob) {
-    var result = [];
+    'use strict';
+    let result = [];
     Object.keys(ob).forEach((key) => {
       result.push(ob[key]);
     });
     return result;
   },
-  
+
   words: function(str) {
+    'use strict';
     str = this.removeSpecial(str).split(' ');
     str = str.filter((item) => {
       return /\S/.test(item);
     });
     return str;
   },
-  
+
   removeSpecial: function(str) {
-    return str.replace(/[.,\/#!$%\^&\*;:'{}=\-_`~()]/g," ");
+    'use strict';
+    return str.replace(/[.,\/#!$%\^&\*;:'{}=\-_`~()]/g, ' ');
   },
-  
+
   uniq: function(arr) {
-    var g = [];
+    'use strict';
+    let g = [];
     arr.map((item) => {
-      if (!g.includes(item)) g.push(item);
+      if (!g.includes(item)) {
+        g.push(item);
+      }
     });
     return g;
   },
-  
+
   parseObject: function(ob) {
-    var result = [];
-    
+    'use strict';
+    let result = [];
+
     Object.keys(ob).map(item => {
       result.push(this.words(item));
       result.push(this.words(ob[item]));
     });
-    
+
     return this.flatten(result);
   },
-  
+
   flatten: function(input) {
+    'use strict';
     if(Array.isArray(input)) {
       input.forEach((item) => {
         this.flatten(item);
@@ -58,9 +66,10 @@ module.exports = {
     }
     return this.result;
   },
-  
+
   cleanUpTemp: function() {
+    'use strict';
     this.result = [];
   }
-  
+
 };
