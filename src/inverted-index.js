@@ -22,16 +22,24 @@ function Index() {
 // createIndex accepts and reads JSON file
 Index.prototype.createIndex = function(filePath) {
   'use strict';
+  let result;
   this.currentFile = this.path.resolve(filePath);
-  let data = this.fs.readFileSync(filePath);
-
+  result = this.fs.readFile(filePath, (err, data) => {
+    if (err) {
+      throw err.message;
+    }
+    return data;
+  });
   // Confirms the content of JSON file
-  if (data.length > 0) {
-    this.dataObject = JSON.parse(data.toString());
-    return this.isEmpty(this.dataObject) ? 'Empty file.'
-      : this.indexData(this.dataObject);
+  try {
+    if (result.length > 0) {
+      this.dataObject = JSON.parse(result.toString());
+      return this.isEmpty(this.dataObject) ? 'Empty file.' : this.indexData(this.dataObject);
+    }
+    return 'Empty file.';
+  } catch (e) {
+    return 'Invalid JSON file';
   }
-  return 'Empty file.';
 };
 
 // isEmpty confirms that the JSON file is not empty
