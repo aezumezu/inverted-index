@@ -1,115 +1,158 @@
-'use strict';
-var app = require('../src/inverted-index');
-var path = require('path');
-var newIndex;
+const App = require('../src/inverted-index');
+const Path = require('path');
+const UTIL = require('util');
+let newIndex;
 
 describe('Read book data', function() {
-  
-  beforeEach(function() {    
-    newIndex = new app();
-  });
-  
-  it('reads the JSON file and asserts that it is not empty', function () {
+  'use strict';
+  beforeEach(function(done) {
+    newIndex = new App();
     newIndex.createIndex('./books.json');
-    var book1Data = newIndex.dataObject;
-    expect(newIndex.isEmpty([{},{'one': 'Bigone'}])).toBe(false);
-    expect(newIndex.isEmpty(book1Data)).toBe(false);
+    done();
   });
-  
-  it('throws error for empty book.json files.', function () {
+
+  it('reads the JSON file and asserts that it is not empty', function(done) {
+    setTimeout(function() {
+      let book1Data = newIndex.dataObject;
+      expect(newIndex.isEmpty([{}, {one: 'Bigone'}])).toBe(false);
+      expect(newIndex.isEmpty(book1Data)).toBe(false);
+      done();
+    }, 300)
+  });
+
+  it('throws error for empty book.json files.', function() {
     expect(newIndex.isEmpty(JSON.parse('[]'))).toBe(true);
     expect(newIndex.isEmpty(JSON.parse('[{}]'))).toBe(true);
     expect(newIndex.isEmpty('')).toBe(true);
     expect(newIndex.isEmpty()).toBe(true);
   });
-  
-  it('return true for book.json files. without objects.', function () {
+
+  it('return true for book.json files. without objects.', function() {
     expect(newIndex.isEmpty('hello world')).toBe(true);
     expect(newIndex.isEmpty(['hello', 'come', 1])).toBe(true);
   });
 });
 
-describe('Populate index', function () {
-  var indexLength;
-  
-  beforeEach(function() {    
-    newIndex = new app();
-  });
-  
-  it('verifies that the indexes where created once json file is read.', function () {
+describe('Populate index', function() {
+  'use strict';
+  let indexLength;
+
+  beforeEach(function(done) {
+    newIndex = new App();
     indexLength = Object.keys(newIndex.wordIndex).length;
     newIndex.createIndex('./books.json');
-    expect(Object.keys(newIndex.wordIndex).length).toBeGreaterThan(indexLength);
+    done();
   });
-  
-  it('verifies the index maps the string keys to the correct objects in the JSON array.', function() {
-    var answer = {'alice': [[path.resolve('./books.json'), [0]]]};
-    newIndex.createIndex('./books.json');
-    expect(newIndex.searchIndex('alice')).toEqual(answer);
+
+  it('verifies that the indexes where created once json file is read.', function(done) {
+    setTimeout(function() {
+      expect(Object.keys(newIndex.wordIndex).length).toBeGreaterThan(indexLength);
+      done();
+    }, 300);
+  });
+
+  it('verifies the index maps the string keys to the correct objects in the JSON array.', function(done) {
+    setTimeout(function() {
+      let answer = {alice: [[Path.resolve('./books.json'), [0]]]};
+      expect(newIndex.searchIndex('alice')).toEqual(UTIL.inspect(answer, false, null));
+      done();
+    }, 300);
   });
 });
 
-describe('Search index', function(){
-  
-  beforeEach(function() {    
-    newIndex = new app();
+describe('Search index', function() {
+  'use strict';
+
+  beforeEach(function(done) {
+    newIndex = new App();
     newIndex.createIndex('./books.json');
+    done();
   });
-  
-  it('returns an array of indices of the object that contains search query.', function(){
-    var answer = {'of': [[path.resolve('./books.json'), [0, 1]]]};
-    expect(newIndex.searchIndex('of')).toEqual(answer);
+
+  it('returns an array of indices of the object that contains search query.', function(done) {
+    setTimeout(function() {
+      let answer = { of: [ [ Path.resolve('./books.json'), [0, 1] ] ] };
+      expect(newIndex.searchIndex('of')).toEqual(UTIL.inspect(answer, false, null));
+      done();
+    }, 600);
   });
-  
-  it('returns an array of indices of the object that contains search query.', function(){
-    newIndex.createIndex('./crater.json');
-    var answer = { 'of':  [ [ path.resolve('./books.json'), [0, 1] ], [ path.resolve('./crater.json'), [1] ] ] };
-    expect(newIndex.searchIndex('of')).toEqual(answer);
+
+  it('returns "Term not found" for search query not in Index.', function(done) {
+    setTimeout(function() {
+      expect(newIndex.searchIndex('office')).toEqual('Term not found');
+      done();
+    }, 300);
   });
-  
-  it('returns "Term not found" for search query not in Index.', function(){
-    expect(newIndex.searchIndex('office')).toEqual('Term not found');
+
+  it('can accept object input as search term.', function(done) {
+    setTimeout(function() {
+      let answer = {fellowship: [[Path.resolve('./books.json'), [0, 1]]],
+                    alice: [[Path.resolve('./books.json'), [0]]]};
+      expect(newIndex.searchIndex([{fellowship: 'alice'}])).toEqual(UTIL.inspect(answer, false, null));
+      expect(newIndex.searchIndex({fellowship: 'alice'})).toEqual(UTIL.inspect(answer, false, null));
+      done();
+    }, 300);
   });
-  
-  it('returns "Index is empty" if Index collection is empty.', function(){
+
+  it('returns "Index is empty" if Index collection is empty.', function() {
     newIndex.wordIndex = {};
     expect(newIndex.searchIndex('of')).toEqual('Index is empty');
   });
+
+  it('returns "Invalid search term" for invalid search inputs.', function(done) {
+    setTimeout(function() {
+      expect(newIndex.searchIndex()).toEqual('Invalid Search Term');
+      expect(newIndex.searchIndex('  ')).toEqual('Invalid Search Term');
+      done();
+    }, 300);
+  });
 });
 
-describe('ParseSearchTerm', function(){
-  
-  beforeEach(function() {    
-    newIndex = new app();
+describe('ParseSearchTerm', function() {
+  'use strict';
+
+  beforeEach(function() {
     newIndex.createIndex('./books.json');
   });
-  it('returns a one dimensional array.', function(){
-    var inputArray = ['alice', ['jerry', 'car', ['item']], 'correct'];
-    var inputString = 'alice, jerry. car item correct';
-    var answer = ['alice', 'jerry', 'car', 'item', 'correct']
+  it('returns a one dimensional array.', function() {
+    let inputArray = ['alice', ['jerry', 'car', ['item']], 'correct'];
+    let inputString = 'alice, jerry. car item correct';
+    let answer = ['alice', 'jerry', 'car', 'item', 'correct'];
     expect(newIndex.parseSearchTerm(inputArray)).toEqual(answer);
     expect(newIndex.parseSearchTerm(inputString)).toEqual(answer);
   });
-  
+
+  it('returns an error for invalid search term.', function() {
+    expect(newIndex.searchIndex(78)).toEqual('Invalid Search Term');
+    expect(newIndex.searchIndex(true)).toEqual('Invalid Search Term');
+    expect(newIndex.searchIndex([true])).toEqual('Invalid Search Term');
+  });
+
 });
 
-describe('getIndex Method', function(){
-  
-  beforeEach(function() {    
-    newIndex = new app();
+describe('getIndex Method', function() {
+  'use strict';
+  let indexValue;
+
+  beforeEach(function(done) {
+    newIndex = new App();
     newIndex.createIndex('./books.json');
-    newIndex.createIndex('./crater.json');
+    done();
   });
-  
-  it('returns the entire index object without parameter.', function(){
-    expect(newIndex.getIndex()).toEqual(newIndex.wordIndex);
+
+  it('returns the entire index object without parameter.', function(done) {
+    setTimeout(function() {
+      expect(newIndex.getIndex()).toEqual(newIndex.wordIndex);
+      done();
+    }, 300);
   });
-  
-  it('returns the specified index in index object.', function(){
-    var indexValue = newIndex.getIndex('books');
-    newIndex.wordIndex = {};
-    newIndex.createIndex('./books.json');
-    expect(indexValue).toEqual(newIndex.wordIndex);
+
+  it('returns the specified index in index object.', function(done) {
+    setTimeout(function() {
+      indexValue = newIndex.wordIndex;
+      expect(indexValue).toEqual(newIndex.getIndex('books'));
+      done();
+    }, 300);
   });
-  
+
 });
