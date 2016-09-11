@@ -1,12 +1,12 @@
-const App = require('../src/inverted-index');
-const Path = require('path');
+const APP = require('../src/inverted-index');
+const PATH = require('path');
 const UTIL = require('util');
 let newIndex;
 
 describe('Read book data', function() {
   'use strict';
   beforeEach(function(done) {
-    newIndex = new App();
+    newIndex = new APP();
     newIndex.createIndex('./books.json');
     done();
   });
@@ -38,7 +38,7 @@ describe('Populate index', function() {
   let indexLength;
 
   beforeEach(function(done) {
-    newIndex = new App();
+    newIndex = new APP();
     indexLength = Object.keys(newIndex.wordIndex).length;
     newIndex.createIndex('./books.json');
     done();
@@ -53,7 +53,7 @@ describe('Populate index', function() {
 
   it('verifies the index maps the string keys to the correct objects in the JSON array.', function(done) {
     setTimeout(function() {
-      let answer = {alice: [[Path.resolve('./books.json'), [0]]]};
+      let answer = {alice: [[PATH.resolve('./books.json'), [0]]]};
       expect(newIndex.searchIndex('alice')).toEqual(UTIL.inspect(answer, false, null));
       done();
     }, 300);
@@ -64,14 +64,14 @@ describe('Search index', function() {
   'use strict';
 
   beforeEach(function(done) {
-    newIndex = new App();
+    newIndex = new APP();
     newIndex.createIndex('./books.json');
     done();
   });
 
   it('returns an array of indices of the object that contains search query.', function(done) {
     setTimeout(function() {
-      let answer = { of: [ [ Path.resolve('./books.json'), [0, 1] ] ] };
+      let answer = { of: [ [ PATH.resolve('./books.json'), [0, 1] ] ] };
       expect(newIndex.searchIndex('of')).toEqual(UTIL.inspect(answer, false, null));
       done();
     }, 600);
@@ -86,8 +86,8 @@ describe('Search index', function() {
 
   it('can accept object input as search term.', function(done) {
     setTimeout(function() {
-      let answer = {fellowship: [[Path.resolve('./books.json'), [0, 1]]],
-                    alice: [[Path.resolve('./books.json'), [0]]]};
+      let answer = {fellowship: [[PATH.resolve('./books.json'), [0, 1]]],
+                    alice: [[PATH.resolve('./books.json'), [0]]]};
       expect(newIndex.searchIndex([{fellowship: 'alice'}])).toEqual(UTIL.inspect(answer, false, null));
       expect(newIndex.searchIndex({fellowship: 'alice'})).toEqual(UTIL.inspect(answer, false, null));
       done();
@@ -99,9 +99,9 @@ describe('Search index', function() {
     expect(newIndex.searchIndex('of')).toEqual('Index is empty');
   });
 
-  it('returns "Invalid search term" for invalid search inputs.', function(done) {
+  it('returns an error message for invalid search inputs.', function(done) {
     setTimeout(function() {
-      expect(newIndex.searchIndex()).toEqual('Invalid Search Term');
+      expect(newIndex.searchIndex()).toEqual('You need to specify a search term.');
       expect(newIndex.searchIndex('  ')).toEqual('Invalid Search Term');
       done();
     }, 300);
@@ -117,12 +117,14 @@ describe('ParseSearchTerm', function() {
   it('returns a one dimensional array.', function() {
     let inputArray = ['alice', ['jerry', 'car', ['item']], 'correct'];
     let inputString = 'alice, jerry. car item correct';
+    let inputObject = {alice: 'jerry', car: 'item correct'};
     let answer = ['alice', 'jerry', 'car', 'item', 'correct'];
     expect(newIndex.parseSearchTerm(inputArray)).toEqual(answer);
     expect(newIndex.parseSearchTerm(inputString)).toEqual(answer);
+    expect(newIndex.parseSearchTerm(inputObject)).toEqual(answer);
   });
 
-  it('returns an error for invalid search term.', function() {
+  it('returns an error message for invalid search term.', function() {
     expect(newIndex.searchIndex(78)).toEqual('Invalid Search Term');
     expect(newIndex.searchIndex(true)).toEqual('Invalid Search Term');
     expect(newIndex.searchIndex([true])).toEqual('Invalid Search Term');
@@ -135,7 +137,7 @@ describe('getIndex Method', function() {
   let indexValue;
 
   beforeEach(function(done) {
-    newIndex = new App();
+    newIndex = new APP();
     newIndex.createIndex('./books.json');
     done();
   });
