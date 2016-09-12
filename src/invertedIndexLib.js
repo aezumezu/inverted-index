@@ -75,7 +75,7 @@ module.exports = {
     return this.compact(this.result);
   },
 
-  // remove all false values
+  // remove all false values and empty spaces
   compact: function(input) {
     'use strict';
     let result = input.filter(item => {

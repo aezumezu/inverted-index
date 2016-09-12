@@ -159,13 +159,16 @@ Index.prototype.getIndex = function(fileName) {
 */
 Index.prototype.searchIndex = function(term) {
   'use strict';
-  if (!/\S/.test(term) || !term) {
+  this.searchResult = {};
+  if (!term) {
+    return 'You need to specify a search term.';
+  }
+  term = this.myLib.compact([...arguments]);
+  if (term.length < 1) {
     return 'Invalid Search Term';
   }
-  this.searchResult = {};
   term = this.parseSearchTerm(term);
-
-  if (!term || term.length < 1) {
+  if (term.length < 1) {
     return 'Invalid Search Term';
   }
   if(Object.keys(this.wordIndex).length < 1) {
