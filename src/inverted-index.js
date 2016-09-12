@@ -20,9 +20,10 @@ function Index() {
 }
 
 /**
-* createIndex accepts and reads JSON file
+* createIndex
 *
-* @function createIndex
+* accepts and reads JSON file
+*
 * @param {String} filePath
 */
 Index.prototype.createIndex = function(filePath) {
@@ -37,9 +38,10 @@ Index.prototype.createIndex = function(filePath) {
 };
 
 /**
+* readObject
+*
 * Confirms the content of JSON file
 *
-* @function readObject
 * @param {JSON object} data
 * @return {String} || {Function}
 */
@@ -52,17 +54,17 @@ Index.prototype.readObject = function(data) {
     }
     return 'Empty file.';
   } catch (e) {
-    return 'Invalid file';
+    throw 'Error.\n The file you choose is not a valid file';
   }
 };
 
 /**
-* isEmpty confirms that the JSON file is not empty
-* Returns true of false.
+* isEmpty
 *
-* @function isEmpty
+* isEmpty confirms that the JSON file is not empty
+* 
 * @param {JSON object} data
-* @return {hoolean} trueOrFalse
+* @return {boolean} trueOrFalse
 */
 Index.prototype.isEmpty = function(data) {
   'use strict';
@@ -79,9 +81,10 @@ Index.prototype.isEmpty = function(data) {
 };
 
 /**
+* indexData
+*
 * This method prepares the words in the JSON for indexing
 *
-* @function indexData
 * @param {JSON object} data
 * @return {Object} wordIndex
 */
@@ -99,9 +102,10 @@ Index.prototype.indexData = function(data) {
 };
 
 /**
+* populate
+*
 * this method stores data inside the wordIndex Object.
 *
-* @function populate
 * @param {Array, Number} (dataList, indexNum)
 */
 Index.prototype.populate = function(dataList, indexNum) {
@@ -115,7 +119,11 @@ Index.prototype.populate = function(dataList, indexNum) {
   });
 };
 
-// used to clean temorary variable used to create index
+/**
+* cleanUpTemp
+*
+* used to clean temorary variable used to create index
+*/
 Index.prototype.cleanUpTemp = function() {
   'use strict';
   this.currentDataIndex = {};
@@ -124,10 +132,11 @@ Index.prototype.cleanUpTemp = function() {
 
 
 /**
+* getIndex
+*
 * getIndex returns the index of the specified file
 * or wordIndex if called without an argument
 *
-* @function getIndex
 * @param {String} fileName
 * @return {Object} result
 */
@@ -150,10 +159,11 @@ Index.prototype.getIndex = function(fileName) {
 };
 
 /**
+* searchIndex
+*
 * searchIndex method searches the index object and returns the search string
 * Returns an object.
-*
-* @function searchIndex
+* 
 * @param {object} term
 * @return {Object} searchResult
 */
@@ -184,7 +194,39 @@ Index.prototype.searchIndex = function(term) {
   return this.util.inspect(this.searchResult, false, null);
 };
 
-// gets the index of the search term in wordIndex
+/**
+* parseSearchTerm
+*
+* this method formats the search term. Returns an array.
+*
+* @param {object} input
+* @return {Array} term
+*/
+Index.prototype.parseSearchTerm = function(input) {
+  'use strict';
+  let term;
+  if(typeof input === 'string') {
+    term = this.myLib.words(input);
+  } else if(Array.isArray(input)) {
+    term = this.myLib.flatten(input);
+  } else if(this.myLib.isObject(input)) {
+    term = this.myLib.parseObject(input);
+  } else {
+    term = null;
+  }
+  this.myLib.cleanUpTemp();
+  return term;
+};
+
+/**
+* findIndex
+*
+* gets and adds the result of a search
+* to the searchResult array
+*
+* @param {array} input
+* @return {Array} term
+*/
 Index.prototype.findIndex = function(term) {
   'use strict';
   let indexValue;
@@ -199,28 +241,5 @@ Index.prototype.findIndex = function(term) {
   });
 };
 
-/**
-* this method formats the search term. Returns an array.
-*
-* @function parseSearchTerm
-* @param {object} input
-* @return {Array} term
-*/
-Index.prototype.parseSearchTerm = function(input) {
-  'use strict';
-  let term;
-  if(typeof input === 'string') {
-    term = this.myLib.words(input);
-  } else if(Array.isArray(input)) {
-    term = this.myLib.flatten(input);
-    this.myLib.cleanUpTemp();
-  } else if(this.myLib.isObject(input)) {
-    term = this.myLib.parseObject(input);
-    this.myLib.cleanUpTemp();
-  } else {
-    term = null;
-  }
-  return term;
-};
 
 module.exports = Index;

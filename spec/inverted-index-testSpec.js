@@ -86,7 +86,7 @@ describe('Search index', function() {
 
   it('can accept object input as search term.', function(done) {
     setTimeout(function() {
-      let answer = {fellowship: [[PATH.resolve('./books.json'), [0, 1]]],
+      let answer = {fellowship: [[PATH.resolve('./books.json'), [1]]],
                     alice: [[PATH.resolve('./books.json'), [0]]]};
       expect(newIndex.searchIndex([{fellowship: 'alice'}])).toEqual(UTIL.inspect(answer, false, null));
       expect(newIndex.searchIndex({fellowship: 'alice'})).toEqual(UTIL.inspect(answer, false, null));
